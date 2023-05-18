@@ -1,7 +1,7 @@
-import Game from '@/fps/page'
-import Image from 'next/image'
+import Game from '@/fps/game'
 
 export default function Home() {
+  // TODO: add a start button
   return (
     <Game />
   )
