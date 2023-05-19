@@ -29,5 +29,9 @@
     "three-pathfinding": "^1.2.0",
     "typescript": "5.0.4",
     "zustand": "^4.3.8"
+  },
+  "devDependencies": {
+    "file-loader": "^6.2.0",
+    "raw-loader": "^4.0.2"
   }
 }

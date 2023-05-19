@@ -1,12 +1,14 @@
+import * as THREE from 'three'
+
 import {  FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import {  GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import {  OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
-import {  SkeletonUtils } from 'three/examples/jsm/utils/SkeletonUtils'
+// import {  SkeletonUtils } from 'three/examples/jsm/utils/SkeletonUtils'
 
-import level from '../../../assets/level.glb'
-import navmesh from './assets/navmesh.obj'
+import level from '../../../assets/level.glt'
+import navmesh from '../../../assets/navmesh.obj'
 
-import mutant from './assets/animations/mutant.fbx'
+import mutant from '../../../assets/animations/mutant.fbx'
 import idleAnim from './assets/animations/mutant breathing idle.fbx'
 import attackAnim from './assets/animations/Mutant Punch.fbx'
 import walkAnim from './assets/animations/mutant walking.fbx'
@@ -32,46 +34,60 @@ import decalColor from './assets/decals/decal_c.jpg'
 import decalNormal from './assets/decals/decal_n.jpg'
 import decalAlpha from './assets/decals/decal_a.jpg'
 
-export async function loadAssets(){
+//Sky
+import skyTex from './assets/sky.jpg'
+
+
+function promiseProgress(promises: Promise<any>[], progress_cb){
+  let d = 0;
+  progress_cb(0);
+  for (const p of promises) {
+    p.then(()=> {    
+      d++;
+      progress_cb( (d / promises.length) * 100 );
+    });
+  }
+  return Promise.all(promises);
+}
+
+export async function loadAssets(addAssetHelper: (url: string, loader: GLTFLoader | FBXLoader | OBJLoader | THREE.AudioLoader | THREE.TextureLoader, assetId: string) => Promise<void>, setProgress: (progress: number) => void): Promise<void>{
   const gltfLoader = new GLTFLoader();
   const fbxLoader = new FBXLoader();
   const objLoader = new OBJLoader();
   const audioLoader = new THREE.AudioLoader();
   const texLoader = new THREE.TextureLoader();
-  const promises = [];
+  const promises: Promise<void>[] = [];
 
   //Level
-  promises.push(this.AddAsset(level, gltfLoader, "level"));
-  promises.push(this.AddAsset(navmesh, objLoader, "navmesh"));
+  promises.push(addAssetHelper(level, gltfLoader, "level"));
+  promises.push(addAssetHelper(navmesh, objLoader, "navmesh"));
   //Mutant
-  promises.push(this.AddAsset(mutant, fbxLoader, "mutant"));
-  promises.push(this.AddAsset(idleAnim, fbxLoader, "idleAnim"));
-  promises.push(this.AddAsset(walkAnim, fbxLoader, "walkAnim"));
-  promises.push(this.AddAsset(runAnim, fbxLoader, "runAnim"));
-  promises.push(this.AddAsset(attackAnim, fbxLoader, "attackAnim"));
-  promises.push(this.AddAsset(dieAnim, fbxLoader, "dieAnim"));
+  promises.push(addAssetHelper(mutant, fbxLoader, "mutant"));
+  promises.push(addAssetHelper(idleAnim, fbxLoader, "idleAnim"));
+  promises.push(addAssetHelper(walkAnim, fbxLoader, "walkAnim"));
+  promises.push(addAssetHelper(runAnim, fbxLoader, "runAnim"));
+  promises.push(addAssetHelper(attackAnim, fbxLoader, "attackAnim"));
+  promises.push(addAssetHelper(dieAnim, fbxLoader, "dieAnim"));
   //AK47
-  promises.push(this.AddAsset(ak47, gltfLoader, "ak47"));
-  promises.push(this.AddAsset(muzzleFlash, gltfLoader, "muzzleFlash"));
-  promises.push(this.AddAsset(ak47Shot, audioLoader, "ak47Shot"));
+  promises.push(addAssetHelper(ak47, gltfLoader, "ak47"));
+  promises.push(addAssetHelper(muzzleFlash, gltfLoader, "muzzleFlash"));
+  promises.push(addAssetHelper(ak47Shot, audioLoader, "ak47Shot"));
   //Ammo box
-  promises.push(this.AddAsset(ammobox, fbxLoader, "ammobox"));
-  promises.push(this.AddAsset(ammoboxTexD, texLoader, "ammoboxTexD"));
-  promises.push(this.AddAsset(ammoboxTexN, texLoader, "ammoboxTexN"));
-  promises.push(this.AddAsset(ammoboxTexM, texLoader, "ammoboxTexM"));
-  promises.push(this.AddAsset(ammoboxTexR, texLoader, "ammoboxTexR"));
-  promises.push(this.AddAsset(ammoboxTexAO, texLoader, "ammoboxTexAO"));
+  promises.push(addAssetHelper(ammobox, fbxLoader, "ammobox"));
+  promises.push(addAssetHelper(ammoboxTexD, texLoader, "ammoboxTexD"));
+  promises.push(addAssetHelper(ammoboxTexN, texLoader, "ammoboxTexN"));
+  promises.push(addAssetHelper(ammoboxTexM, texLoader, "ammoboxTexM"));
+  promises.push(addAssetHelper(ammoboxTexR, texLoader, "ammoboxTexR"));
+  promises.push(addAssetHelper(ammoboxTexAO, texLoader, "ammoboxTexAO"));
   //Decal
-  promises.push(this.AddAsset(decalColor, texLoader, "decalColor"));
-  promises.push(this.AddAsset(decalNormal, texLoader, "decalNormal"));
-  promises.push(this.AddAsset(decalAlpha, texLoader, "decalAlpha"));
+  promises.push(addAssetHelper(decalColor, texLoader, "decalColor"));
+  promises.push(addAssetHelper(decalNormal, texLoader, "decalNormal"));
+  promises.push(addAssetHelper(decalAlpha, texLoader, "decalAlpha"));
 
-  promises.push(this.AddAsset(skyTex, texLoader, "skyTex"));
+  promises.push(addAssetHelper(skyTex, texLoader, "skyTex"));
 
-  await this.PromiseProgress(promises, this.OnProgress);
 
-  this.assets['level'] = this.assets['level'].scene;
-  this.assets['muzzleFlash'] = this.assets['muzzleFlash'].scene;
+  await promiseProgress(promises, setProgress);
 
   //Extract mutant anims
   this.mutantAnims = {};

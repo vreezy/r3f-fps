@@ -16,44 +16,47 @@ import LevelSetup from './entities/Level/LevelSetup'
 import PlayerControls from './entities/Player/PlayerControls'
 import PlayerPhysics from './entities/Player/PlayerPhysics'
 import Stats from 'three/examples/jsm/libs/stats.module'
-import {  FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
-import {  GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import {  OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
-import {  SkeletonUtils } from 'three/examples/jsm/utils/SkeletonUtils'
+
+
+// import {  FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
+// import {  GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+// import {  OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
+// import {  SkeletonUtils } from 'three/examples/jsm/utils/SkeletonUtils'
+
 import NpcCharacterController from './entities/NPC/CharacterController'
 import Input from './Input'
 
-import level from './assets/level.glb'
-import navmesh from './assets/navmesh.obj'
+// import level from './assets/level.glb'
+// import navmesh from './assets/navmesh.obj'
 
-import mutant from './assets/animations/mutant.fbx'
-import idleAnim from './assets/animations/mutant breathing idle.fbx'
-import attackAnim from './assets/animations/Mutant Punch.fbx'
-import walkAnim from './assets/animations/mutant walking.fbx'
-import runAnim from './assets/animations/mutant run.fbx'
-import dieAnim from './assets/animations/mutant dying.fbx'
+// import mutant from './assets/animations/mutant.fbx'
+// import idleAnim from './assets/animations/mutant breathing idle.fbx'
+// import attackAnim from './assets/animations/Mutant Punch.fbx'
+// import walkAnim from './assets/animations/mutant walking.fbx'
+// import runAnim from './assets/animations/mutant run.fbx'
+// import dieAnim from './assets/animations/mutant dying.fbx'
 
-//AK47 Model and textures
-import ak47 from './assets/guns/ak47/ak47.glb'
-import muzzleFlash from './assets/muzzle_flash.glb'
-//Shot sound
-import ak47Shot from './assets/sounds/ak47_shot.wav'
+// //AK47 Model and textures
+// import ak47 from './assets/guns/ak47/ak47.glb'
+// import muzzleFlash from './assets/muzzle_flash.glb'
+// //Shot sound
+// import ak47Shot from './assets/sounds/ak47_shot.wav'
 
-//Ammo box
-import ammobox from './assets/ammo/AmmoBox.fbx'
-import ammoboxTexD from './assets/ammo/AmmoBox_D.tga.png'
-import ammoboxTexN from './assets/ammo/AmmoBox_N.tga.png'
-import ammoboxTexM from './assets/ammo/AmmoBox_M.tga.png'
-import ammoboxTexR from './assets/ammo/AmmoBox_R.tga.png'
-import ammoboxTexAO from './assets/ammo/AmmoBox_AO.tga.png'
+// //Ammo box
+// import ammobox from './assets/ammo/AmmoBox.fbx'
+// import ammoboxTexD from './assets/ammo/AmmoBox_D.tga.png'
+// import ammoboxTexN from './assets/ammo/AmmoBox_N.tga.png'
+// import ammoboxTexM from './assets/ammo/AmmoBox_M.tga.png'
+// import ammoboxTexR from './assets/ammo/AmmoBox_R.tga.png'
+// import ammoboxTexAO from './assets/ammo/AmmoBox_AO.tga.png'
 
 //Bullet Decal
 import decalColor from './assets/decals/decal_c.jpg'
 import decalNormal from './assets/decals/decal_n.jpg'
 import decalAlpha from './assets/decals/decal_a.jpg'
 
-//Sky
-import skyTex from './assets/sky.jpg'
+// //Sky
+// import skyTex from './assets/sky.jpg'
 
 import DebugDrawer from './DebugDrawer'
 import Navmesh from './entities/Level/Navmesh'
@@ -134,17 +137,17 @@ class FPSGameApp{
     this.mutantAnims[name] = clip;
   }
 
-  PromiseProgress(proms, progress_cb){
-    let d = 0;
-    progress_cb(0);
-    for (const p of proms) {
-      p.then(()=> {    
-        d++;
-        progress_cb( (d / proms.length) * 100 );
-      });
-    }
-    return Promise.all(proms);
-  }
+  // PromiseProgress(proms, progress_cb){
+  //   let d = 0;
+  //   progress_cb(0);
+  //   for (const p of proms) {
+  //     p.then(()=> {    
+  //       d++;
+  //       progress_cb( (d / proms.length) * 100 );
+  //     });
+  //   }
+  //   return Promise.all(proms);
+  // }
 
   AddAsset(asset, loader, name){
     return loader.loadAsync(asset).then( result =>{
